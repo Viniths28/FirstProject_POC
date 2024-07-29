@@ -1,5 +1,29 @@
 import streamlit as st
 from langchain_core.messages import AIMessage, HumanMessage
+from langchain_community.document_loaders import WebBaseLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_community.vectorstores import Chroma
+from langchain_openai import OpenAIEmbeddings, ChatOpenAI
+from dotenv import load_dotenv
+
+
+def get_vectorstore_from_url(url):
+    loader = WebBaseLoader(url)         
+    document = loader.load()
+    text_splitter = RecursiveCharacterTextSplitter()
+    document_chunks = text_splitter.split_documents(document)
+
+    vector_store = chroma.from_documents(document_chunks,OpenAIEmbeddings())
+
+
+    return document_chunks
+
+
+
+
+
+    return document
+
 st.set_page_config(page_title="Ask a Question about disasterWise Website", page_icon= ":-)")
 st.title("Ask Question")
     
@@ -21,6 +45,11 @@ if website_url is None or website_url == "":
     st.info("Please enter a website URL")
 
 else:
+    chunks = get_vectorstore_from_url(website_url)
+    with st.sidebar:
+        st.write(chunks)
+
+
     user_query = st.chat_input("Type Yor Questions here...")
     if user_query is not None and user_query !="":
         response = get_response(user_query)
