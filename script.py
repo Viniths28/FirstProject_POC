@@ -6,6 +6,8 @@ from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from dotenv import load_dotenv
 
+load_dotenv()
+
 
 def get_vectorstore_from_url(url):
     loader = WebBaseLoader(url)         
@@ -22,7 +24,7 @@ def get_vectorstore_from_url(url):
 
 
 
-    return document
+    
 
 st.set_page_config(page_title="Ask a Question about disasterWise Website", page_icon= ":-)")
 st.title("Ask Question")
